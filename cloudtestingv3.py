@@ -1,6 +1,6 @@
 import numpy as np
 from PIL import Image
-from keras.models import load_model
+
 
 
 from flask import Flask, jsonify
@@ -14,12 +14,14 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 
+from tflite_runtime import interpreter as tflite
+
 
 
 app = Flask(__name__)
 
 
-model =load_model('effnet.h5')
+interpreter = tflite.Interpreter(model_path="effnet.tflite")
 print('Model loaded.')
 
 
@@ -122,25 +124,38 @@ def getResultV2(url):
     # image = Image.fromarray(image, 'RGB')
 
     urllib.request.urlretrieve(url,"gfg.jpg")
-  
-    image = Image.open("gfg.jpg")
-    # image.show()
-    image = image.resize((150, 150))
+    
+        
+
+    
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+
+    input_data_type = input_details[0]["dtype"]
+    image = np.array(Image.open("gfg.jpg").resize((150, 150)), dtype=input_data_type)
     image=np.array(image)
-    input_img = np.expand_dims(image, axis=0)
-    result=model.predict(input_img)
-    print("Predict result : ", result)
-    result = np.argmax(result,axis=1)[0]
+    image = np.expand_dims(image, axis=0)
+
+    print(input_details[0])
+    interpreter.set_tensor(input_details[0]["index"], image)
+    interpreter.invoke()
+    tflite_interpreter_output = interpreter.get_tensor(output_details[0]["index"])
+    print(tflite_interpreter_output )
+    result = np.argmax(tflite_interpreter_output,axis=1)[0]
     print(result)
 
     if result==0:
-        result = 'Glioma Tumor'
+      result = 'Glioma Tumor'
     elif result==1:
-        result = "No Tumor"
+      result = "No Tumor"
     elif result==2:
-        result = 'Meningioma Tumor'
+      result = 'Meningioma Tumor'
     else:
-        result = 'Pituitary Tumor'
+      result = 'Pituitary Tumor'
+
+    print(result)
+    
     
     
     send_result_to_firebase(result)
