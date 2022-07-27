@@ -213,9 +213,9 @@ def modelpredict():
 
 
 
-if __name__ == '__main__':
 
-    app.run(debug=False)
+
+
 
 
 # getResult("C:\Users\richa\Downloads\BrainTumor Classification DL\uploads\y14.jpg")
