@@ -1,6 +1,7 @@
 firebase_admin
 Flask
 tflite-runtime
+gunicorn
 numpy
 Pillow
 Pyrebase
