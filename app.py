@@ -214,7 +214,8 @@ def modelpredict():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=port, debug=True)
+
+    app.run(debug=False,host='0.0.0.0')
 
 
 # getResult("C:\Users\richa\Downloads\BrainTumor Classification DL\uploads\y14.jpg")
