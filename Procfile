@@ -1,1 +1,1 @@
-web: python cloudtestingv3.py runserver 0.0.0.0:5000
+web: gunicorn --bind 127.0.0.1:5000 cloudtestingv3:app
