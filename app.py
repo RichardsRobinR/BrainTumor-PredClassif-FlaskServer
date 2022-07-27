@@ -3,7 +3,7 @@ from PIL import Image
 
 import os 
 
-port = int(os.environ.get("PORT", 5000))
+
 
 from flask import Flask, jsonify
 
