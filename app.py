@@ -17,7 +17,6 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 from tflite_runtime import interpreter as tflite
-from github import Github
 
 
 
@@ -47,14 +46,21 @@ path_on_cloud = "images/sample.jpg"
 path_local = "images/toupload.jpg"
 
 
-#download from github json cre
-github = Github('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')
-repository = github.get_user().get_repo('BrainTumor-PredClassif-FlaskServer')
-# path in the repository
-file =repository.get_contents('brain-tumor-detector-6be52-firebase-adminsdk-rjegi-dfd3f47967.json')
-print(file.download_url)
+#firebasecred
+firebasecred = {
+  "type": "service_account",
+  "project_id": "brain-tumor-detector-6be52",
+  "private_key_id": "dfd3f47967e13604bd6bc6354c39ab56e81be2c6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDaIFd4D34XSD/J\nxkzKgjqlOtfxSwd5K1DvDF9kds3x8VbJYweZ75EzgrWo1+0BXH/rHvWOuvXSSZ8R\nNqx6iqNIq76Y2pM4440tcsPsqJa5yQcVGADizxTn0bxJdo0qCSeTqmdp9QlsInBL\nxKZN3wg7sctXn7HZGSckVrxmfnR73q2uKnM+NDDVWQYHpP+srvV6Vfc8HTauY8Pf\neXtxACWL2QXGQ83brCmTkMFsrGciqu+8/ZqshFKSAZWgZ+e5KY+JVkHJWeJ0nrNT\nfGO1twk0T2tsjuT5Beaho33TzD69AGaskFROlnpaWt+wy2IHbNZGO/7kn4enBqXB\nhPBR2utlAgMBAAECggEABOdsq3BZKIVqdSaWLj9f3in7qFH7OwgrIoJw/OIZMPML\nPVIk8C1WYqpfpOWTmIbPk7hAd+50tGOfWDAD646FPdgqEtUeDRbOUOVD7mS/XHsV\naEBJC6vMxoYM6V1W97av1WLs0Np1MKF5AyQ4Z9BcJr21/zadWdx2DRv09q6ptg4M\nGu3BANymjE+Dg8hCF11mAxRpvENCh92v5dVeOayuIz7VAhvbN0585PmGbNAnLqDb\nvzJu3WOh83gdaTn0c46sL8XYfoxwrzlR8eSHmR/U8if4mJJa4s/D4Cj5/Lf2vfRV\n6pn/W0uPlgwvS4RiTjS3NIjex0dpRun77FmIvGmYSQKBgQDvUCePliwOk+mMwJic\nKYbQceIlw0l42RCUiT8et815cgYXTVSGKRUvcY5xSfSjI+u6aZKpcbnu4dn6ICcp\n44MLEauaBabWxDzajFLW7AxE8wMcYgXaB5B9ihuKoemXZB/1tyl4QpzaY1BmNPHt\neQQp9Q5xH1EwV5sckewWJSE8OwKBgQDpVf5u8SnxV0RQ8TVdX2eLqF9S3l5/+7Wd\nbNfQZ623SHeY4FYONaT9mhFosuyvG/qDmbpoQCopqiL8nU3NtIsC04wHpwr+ivOw\nNXtlx7sWHZh6CRRUwXESVPzhFEIPAyhYH8LAt9KaRk7lKGiaFPU1523PRXJiIAqw\ncZ1t3eMc3wKBgQDZUda7I8paaqO6N+PeXC+a9vBBDriXz7aozIHPaWZklNFHM+g/\n9OrSLLMH2fsYczRMEjcnPKl2bw69f5lRBtQnpyJIOj2p5obEiI1psu3pZy06ByH9\nPsVN267rE+HGoxwKzQwRs5wxDeMjDY1s82p+l5VH0QKvfb7UEQdtjMZDpQKBgQCz\nIgKwF1MU5eMbpOJMKbcrn3p2+yJfbNVT40CXzVCu+eJfKjLGu+ZLj2E4GMzd7kPX\njkhuSnxT+jrb5sPZXXavF8tUAKjPG8vThmuSitCVPOlXHutN2ig9Y6O0BEJmlgz+\nAnwYScdUCw/8m5YaXGaYGHDUBEO5E1JBfSfYNdVqzwKBgD4dkP0sfc0bcvRC+btH\nJS8jlcf2CJYBty+tXgApALRnlkWT/VjJsRk0Kla+235rCQb2x68mMlDwnsZ3R5ZS\nWcUOiSMcXPaZAaRsVdBd4G/AY2BlJbT+3DRSRxg+mlzSMP4PVh+MFErdqEEMpssX\niPbUYSro5sP9tLc81Y8TdpAK\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-rjegi@brain-tumor-detector-6be52.iam.gserviceaccount.com",
+  "client_id": "111732052885284013437",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-rjegi%40brain-tumor-detector-6be52.iam.gserviceaccount.com" 
+}
 # credintials for firestore
-cred = credentials.Certificate(file.download_url)
+cred = credentials.Certificate(firebasecred)
 firebase_admin.initialize_app(cred)
 
 
