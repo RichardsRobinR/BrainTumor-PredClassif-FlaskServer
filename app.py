@@ -68,8 +68,8 @@ def firebase_upload(path_on_cloud,path_local,storage):
     storage.child(path_on_cloud).put(path_local)
 
 def firebase_get_image_url(path_on_cloud,storage):
-#     url = storage.child(path_on_cloud).get_url(None)
-    url = "https://firebasestorage.googleapis.com/v0/b/brain-tumor-detector-6be52.appspot.com/o/images%2Fsample.jpg?alt=media"
+    url = storage.child(path_on_cloud).get_url()
+#     url = "https://firebasestorage.googleapis.com/v0/b/brain-tumor-detector-6be52.appspot.com/o/images%2Fsample.jpg?alt=media"
     if url:
         print(url)
         getResultV2(url)
