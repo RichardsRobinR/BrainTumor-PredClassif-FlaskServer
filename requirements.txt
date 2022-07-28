@@ -4,4 +4,5 @@ tflite-runtime
 gunicorn
 numpy
 Pillow
+pycryptodome
 Pyrebase
