@@ -17,6 +17,9 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 from tflite_runtime import interpreter as tflite
+from github import Github
+
+
 
 
 
@@ -43,8 +46,15 @@ storage = firebase.storage()
 path_on_cloud = "images/sample.jpg"
 path_local = "images/toupload.jpg"
 
+
+#download from github json cre
+github = Github('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')
+repository = github.get_user().get_repo('BrainTumor-PredClassif-FlaskServer')
+# path in the repository
+file =repository.get_contents('brain-tumor-detector-6be52-firebase-adminsdk-rjegi-dfd3f47967.json')
+print(file.download_url)
 # credintials for firestore
-cred = credentials.Certificate("brain-tumor-detector-6be52-firebase-adminsdk-rjegi-dfd3f47967.json")
+cred = credentials.Certificate(file.download_url)
 firebase_admin.initialize_app(cred)
 
 
